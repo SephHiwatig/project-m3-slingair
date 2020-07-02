@@ -87,6 +87,11 @@ const handlePostCnfirmation = (req, res) => {
   }
 };
 
+const handleAdmin = (req, res) => {
+  const flightsNumbers = Object.keys(flights);
+  res.status(200).render("pages/admin", { flightNumbers: flightsNumbers });
+};
+
 express()
   .use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -111,5 +116,6 @@ express()
   .get("/flights/:flightNumber", handleFlight)
   .post("/users", handlePostCnfirmation)
   .post("/view", handlePostReservation)
+  .get("/admin", handleAdmin)
   .use((req, res) => res.send("Not Found"))
   .listen(PORT, () => console.log(`Listening on port ${PORT}`));
