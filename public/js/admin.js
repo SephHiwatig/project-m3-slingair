@@ -1,4 +1,4 @@
-const seatsDiv = document.getElementById("seats-section");
+const seatsDiv = document.getElementById("admin-seats-section");
 const flightInput = document.getElementById("flight");
 
 const renderSeats = (data) => {
@@ -36,9 +36,10 @@ const toggleFormContent = (event) => {
   const flightNumber = flightInput.value;
   const validFlightPattern = /^([A-Z]{2}\d{3})$/.test(flightNumber);
   if (validFlightPattern) {
-    fetch(`/flights/${flightNumber}`)
+    fetch(`/flights/${flightNumber}?admin=true`)
       .then((res) => res.json())
       .then((data) => {
+        console.log(data);
         renderSeats(data);
       });
   }

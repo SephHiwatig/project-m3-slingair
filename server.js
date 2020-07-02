@@ -9,13 +9,30 @@ const { reservations } = require("./test-data/reservations");
 const PORT = process.env.PORT || 8000;
 
 const handleFlight = (req, res) => {
+  console.log(req.query.admin);
   const { flightNumber } = req.params;
   // get all flight numbers
   const allFlights = Object.keys(flights);
   // is flightNumber in the array?
   const validFlight = allFlights.includes(flightNumber);
   if (validFlight) {
-    res.json(flights[flightNumber]);
+    if (req.query.admin) {
+      const flight = flights[flightNumber];
+      flight.forEach((seat) => {
+        if (!seat.isAvailable) {
+          const reserved = reservations.find(
+            (x) => x.flight === flightNumber && x.seat === seat.id
+          );
+          if (reserved) {
+            const occupant = reserved.givenName + " " + reserved.surname;
+            seat.occupant = occupant;
+          }
+        }
+      });
+      res.json(flight);
+    } else {
+      res.json(flights[flightNumber]);
+    }
   } else {
     res.status(404).redirect("/seat-select");
   }
