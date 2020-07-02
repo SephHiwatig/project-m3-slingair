@@ -23,6 +23,7 @@ main {
   background: var(--alabama-crimson);
   height: 120px;
   padding: var(--page-padding) 18px;
+  display: flex;
 }
 .content {
   flex: 1 0 auto;
@@ -53,7 +54,8 @@ h1,
 h2,
 h3,
 label,
-button {
+button,
+.nav-item {
   color: #fff;
   font-family: var(--heading-font);
   font-size: 32px;
@@ -274,4 +276,24 @@ select {
 
 .form-container {
   display: none;
+}
+
+.nav {
+  margin-top: 10px;
+  margin-left: 10px;
+  display: flex;
+  align-items: center;
+  justify-content: flex-start;
+}
+
+.nav-item {
+  margin: 10px;
+  cursor: pointer;
+  border-radius: 4px;
+  padding: 10px;
+  text-decoration: none;
+}
+
+.nav-item:hover {
+  background-color: var(--selective-yellow) !important;
 }

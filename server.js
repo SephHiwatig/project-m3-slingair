@@ -45,7 +45,6 @@ const handleViewReservation = (req, res) => {
   const givenName = req.query.givenName;
   const surname = req.query.surname;
   const email = req.query.email;
-  console.log(reservations);
   const userReservations = reservations.filter(
     (x) =>
       x.givenName === givenName && x.surname === surname && x.email === email
