@@ -17,10 +17,11 @@
           <p class="message">Your flight is confirmed!</p>
           <ul class="user-info">
             <li>
-              Flight #:<span id="flight"></span> seat #: <span id="seat"></span>
+              Flight #:<span id="flight"><%- flightNum %></span> seat #:
+              <span id="seat"><%- seat %></span>
             </li>
-            <li>Name:<span id="name"></span></li>
-            <li>Email:<span id="email"></span></li>
+            <li>Name:<span id="name"><%- name %></span></li>
+            <li>Email:<span id="email"><%- email %></span></li>
           </ul>
         </div>
         <div class="tombstone"></div>

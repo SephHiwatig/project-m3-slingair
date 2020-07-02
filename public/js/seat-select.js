@@ -5,6 +5,7 @@ const confirmButton = document.getElementById("confirm-button");
 let selection = "";
 
 const renderSeats = (data) => {
+  seatsDiv.innerHTML = "";
   document.querySelector(".form-container").style.display = "block";
 
   const alpha = ["A", "B", "C", "D", "E", "F"];
@@ -32,7 +33,7 @@ const renderSeats = (data) => {
       row.appendChild(seat);
     }
   }
-
+  confirmButton.disabled = true;
   let seatMap = document.forms["seats"].elements["seat"];
   seatMap.forEach((seat) => {
     seat.onclick = () => {
@@ -44,7 +45,7 @@ const renderSeats = (data) => {
       });
       document.getElementById(seat.value).classList.add("selected");
       document.getElementById("seat-number").innerText = `(${selection})`;
-      confirmButton.disabled = false;
+      validateInput();
     };
   });
 };
@@ -62,28 +63,43 @@ const toggleFormContent = (event) => {
   } else {
     // Will Execute if user tries to alter html of the page and changed
     // the values for the dropdown
-    createErrorMessage();
+    createErrorMessage("Invalid Flight #");
   }
 };
 
 const handleConfirmSeat = (event) => {
   event.preventDefault();
   // TODO: everything in here!
+  let reservation = {
+    id: null,
+    flight: flightInput.value,
+    seat: selection,
+    givenName: document.getElementById("givenName").value,
+    surname: document.getElementById("surname").value,
+    email: document.getElementById("email").value,
+  };
+
   fetch("/users", {
     method: "POST",
-    body: JSON.stringify({
-      givenName: document.getElementById("givenName").value,
-    }),
+    body: JSON.stringify(reservation),
     headers: {
       Accept: "application/json",
       "Content-Type": "application/json",
     },
-  });
+  })
+    .then((data) => data.json())
+    .then((data) => {
+      if (data.err) {
+        createErrorMessage(data.err);
+      } else {
+        window.location.href = "./confirmed?id=" + data.id;
+      }
+    });
 };
 
 flightInput.addEventListener("blur", toggleFormContent);
 
-function createErrorMessage() {
+function createErrorMessage(errorMsg) {
   const err = document.createElement("div");
   err.style.position = "absolute";
   err.style.border = "1px solid #d80026";
@@ -95,7 +111,7 @@ function createErrorMessage() {
   err.style.top = "50%";
   err.style.transform = "translate(-50%, -50%)";
   const message = document.createElement("p");
-  message.innerHTML = "Please enter a valid flight #";
+  message.innerHTML = errorMsg;
   message.style.margin = "10px";
   const btn = document.createElement("button");
   btn.style.padding = "5px";
@@ -110,4 +126,20 @@ function createErrorMessage() {
   err.appendChild(message);
   err.appendChild(btn);
   document.body.appendChild(err);
+}
+
+function validateInput() {
+  const seatSelected = selection && selection !== "";
+  const gname = document.getElementById("givenName").value;
+  const givenNameProvided = gname && gname !== "";
+  const sname = document.getElementById("surname").value;
+  const surNameProvided = sname && sname !== "";
+  const email = document.getElementById("email").value;
+  const emailProvided = email && email !== "";
+
+  if (seatSelected && givenNameProvided && surNameProvided && emailProvided) {
+    confirmButton.disabled = false;
+  } else {
+    confirmButton.disabled = true;
+  }
 }
