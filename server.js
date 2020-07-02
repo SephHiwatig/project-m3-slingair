@@ -16,7 +16,8 @@ const handleFlight = (req, res) => {
 };
 
 const handleSeatSelect = (req, res) => {
-  res.status(200).render("pages/index");
+  const flightsNumbers = Object.keys(flights);
+  res.status(200).render("pages/index", { flightNumbers: flightsNumbers });
 };
 
 const handleConfirmed = (req, res) => {
