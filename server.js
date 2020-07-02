@@ -12,7 +12,12 @@ const handleFlight = (req, res) => {
   // get all flight numbers
   const allFlights = Object.keys(flights);
   // is flightNumber in the array?
-  console.log("REAL FLIGHT: ", allFlights.includes(flightNumber));
+  const validFlight = allFlights.includes(flightNumber);
+  if (validFlight) {
+    res.json(flights[flightNumber]);
+  } else {
+    res.status(404).redirect("/seat-select");
+  }
 };
 
 const handleSeatSelect = (req, res) => {
