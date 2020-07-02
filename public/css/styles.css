@@ -214,6 +214,11 @@ select {
   width: 400px;
 }
 
+.reservation-list {
+  margin-top: 5px;
+  margin-bottom: 5px;
+}
+
 .form-item {
   margin-bottom: 6px;
   width: 100%;

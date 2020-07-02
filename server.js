@@ -29,7 +29,6 @@ const handleSeatSelect = (req, res) => {
 const handleConfirmed = (req, res) => {
   const reservationId = req.query.id;
   const newReservation = reservations.find((x) => x.id === reservationId);
-  console.log(newReservation);
   if (!newReservation) {
     res.status(400).redirect("/seat-select");
   } else {
@@ -43,7 +42,26 @@ const handleConfirmed = (req, res) => {
 };
 
 const handleViewReservation = (req, res) => {
-  res.status(200).render("pages/view-reservation");
+  const givenName = req.query.givenName;
+  const surname = req.query.surname;
+  const email = req.query.email;
+  console.log(reservations);
+  const userReservations = reservations.filter(
+    (x) =>
+      x.givenName === givenName && x.surname === surname && x.email === email
+  );
+  console.log(userReservations);
+  res
+    .status(200)
+    .render("pages/view-reservation", { reservations: userReservations });
+};
+
+const handlePostReservation = (req, res) => {
+  let queryString = "?givenName=" + req.body.givenName;
+  queryString += "&surname=" + req.body.surname;
+  queryString += "&email=" + req.body.email;
+
+  res.redirect("/reservation" + queryString);
 };
 
 const handlePostCnfirmation = (req, res) => {
@@ -93,5 +111,6 @@ express()
   .get("/reservation", handleViewReservation)
   .get("/flights/:flightNumber", handleFlight)
   .post("/users", handlePostCnfirmation)
+  .post("/view", handlePostReservation)
   .use((req, res) => res.send("Not Found"))
   .listen(PORT, () => console.log(`Listening on port ${PORT}`));
