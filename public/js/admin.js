@@ -14,16 +14,19 @@ const renderSeats = (data) => {
     for (let s = 1; s < 7; s++) {
       const seatNumber = `${r}${alpha[s - 1]}`;
       const seat = document.createElement("li");
+      let seatData = data.find((d) => d.id === seatNumber);
 
       // Two types of seats to render
-      const seatOccupied = `<li><label class="seat"><span id="${seatNumber}" class="occupied">${seatNumber}</span></label></li>`;
-      const seatAvailable = `<li><label class="seat"><input type="radio" name="seat" value="${seatNumber}" /><span id="${seatNumber}" class="avail">${seatNumber}</span></label></li>`;
+      const seatAvailable = `<li class="occupant"><label class="seat"><input type="radio" name="seat" value="${seatNumber}" /><span id="${seatNumber}" class="avail">${seatNumber}</span></label></li>`;
 
       // TODO: render the seat availability based on the data...
-      let seatData = data.find((d) => d.id === seatNumber);
       if (seatData.isAvailable) {
         seat.innerHTML = seatAvailable;
       } else {
+        const occupant = seatData.occupant
+          ? seatData.occupant
+          : "Mystery Person";
+        const seatOccupied = `<li class="occupant"><label class="seat"><span id="${seatNumber}" class="occ">${seatNumber} <span class="occupant-name">${occupant}</span></span></label></li>`;
         seat.innerHTML = seatOccupied;
       }
 

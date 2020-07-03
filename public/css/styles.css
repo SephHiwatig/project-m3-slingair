@@ -194,11 +194,29 @@ select {
   border: 1px solid var(--alabama-crimson);
 }
 
-.seat span.occupied {
+.seat span.occupied,
+.seat span.occ {
   background: var(--selective-yellow);
   color: #fff;
   cursor: not-allowed;
   opacity: 0.5;
+}
+
+.seat span.occ {
+  cursor: pointer !important;
+}
+
+.occupant {
+  padding: 30px;
+}
+
+.occupant-name {
+  margin-top: 30px;
+}
+
+.occupant-name:hover {
+  background: #fff !important;
+  color: var(--alabama-crimson) !important;
 }
 
 .seat span:hover,
