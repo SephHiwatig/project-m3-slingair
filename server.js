@@ -26,6 +26,7 @@ const handleFlight = (req, res) => {
           if (reserved) {
             const occupant = reserved.givenName + " " + reserved.surname;
             seat.occupant = occupant;
+            seat.bookingId = reserved.id;
           }
         }
       });
@@ -109,6 +110,12 @@ const handleAdmin = (req, res) => {
   res.status(200).render("pages/admin", { flightNumbers: flightsNumbers });
 };
 
+const handleBookingInfo = (req, res) => {
+  const { bookingId } = req.body;
+  let info = reservations.find((x) => x.id === bookingId);
+  res.status(200).json(info);
+};
+
 express()
   .use(function (req, res, next) {
     res.header("Access-Control-Allow-Origin", "*");
@@ -134,5 +141,6 @@ express()
   .post("/users", handlePostCnfirmation)
   .post("/view", handlePostReservation)
   .get("/admin", handleAdmin)
+  .post("/bookinginfo", handleBookingInfo)
   .use((req, res) => res.send("Not Found"))
   .listen(PORT, () => console.log(`Listening on port ${PORT}`));
